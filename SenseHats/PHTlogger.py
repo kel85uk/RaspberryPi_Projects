@@ -16,16 +16,25 @@ timeList = list()
 tempList = list()
 presList = list()
 rHList	 = list()
+xList = list()
+yList = list()
+zList = list()
 finetempList = np.array([])
 finepresList = np.array([])
 finerHList = np.array([])
+finexList = np.array([])
+fineyList = np.array([])
+finezList = np.array([])
 
 dateFile = open('Datefiles.log','w')
 tempFile = open('Tempfiles.log','w')
 presFile = open('Presfiles.log','w')
 humiFile = open('Humifiles.log','w')
+xFile = open('x_files.log','w')
+yFile = open('y_file.log','w')
+zFile = open('z_file.log','w')
 
-dt = 60
+dt = 5
 t = 0
 #fig = plt.figure()
 #ax1 = fig.add_subplot(3,1,1)
@@ -56,21 +65,34 @@ while True:
 	finetempList = np.append(finetempList,calctemp)
 	finepresList = np.append(finepresList,pressure)
 	finerHList = np.append(finerHList,humidity)
-	
+	x,y,z = sense.get_accelerometer_raw().values()
+	finexList = np.append(finexList,x)
+	fineyList = np.append(fineyList,y)
+	finezList = np.append(finezList,z)
+	#print x,y,z
 	if (t%dt==0):
 		dateList.append(timestamp)
 		timeList.append(t)
 		tempList.append(np.mean(finetempList))
 		presList.append(np.mean(finepresList))
 		rHList.append(np.mean(finerHList))
+		xList.append(np.mean(finexList))
+		yList.append(np.mean(fineyList))
+		zList.append(np.mean(finezList))
 		dateFile.write(str(timestamp) + '\n')
 		tempFile.write(str(finetempList.mean()) + '\n')
 		presFile.write(str(finepresList.mean()) + '\n')
 		humiFile.write(str(finerHList.mean()) + '\n')
+		xFile.write(str(finexList.mean()) + '\n')
+		yFile.write(str(fineyList.mean()) + '\n')
+		zFile.write(str(finezList.mean()) + '\n')
 		dateFile.flush()
 		tempFile.flush()
 		presFile.flush()
 		humiFile.flush()
+		xFile.flush()
+		yFile.flush()
+		zFile.flush()
 		#ax1.clear()
 		#ax2.clear()
 		#ax3.clear()
@@ -84,7 +106,13 @@ while True:
 		del finetempList
 		del finepresList
 		del finerHList
+		del finexList
+		del fineyList
+		del finezList
 		finetempList = np.array([])
 		finepresList = np.array([])
 		finerHList = np.array([])
+		finexList = np.array([])
+		fineyList = np.array([])
+		finezList = np.array([])
 	sleep(1)
