@@ -31,7 +31,10 @@ def main():
 	wdth = int(math.floor(360))
 	hgth = int(math.floor(800))
 	camera = VideoStream(usePiCamera=True,resolution=(wdth,hgth)).start()
-	time.sleep(0.5)
+	time.sleep(2.0)
+	fourcc = cv2.VideoWriter_fourcc(*'MJPG')
+	writer = None
+	(h,w) = (None, None)
 	# setup the mouse callback
 	cv2.startWindowThread()
 	cv2.namedWindow("Detection")
@@ -45,6 +48,10 @@ def main():
 		timestamp = datetime.datetime.now()
 		ts = timestamp.strftime("%d/%m/%Y %H:%M:%S")
 		cv2.putText(frame,ts,(10,frame.shape[0]-10),cv2.FONT_HERSHEY_SIMPLEX,0.35,(0,255,0),1)
+		if writer is None:
+			(h,w) = frame.shape[:2]
+			writer = cv2.VideoWriter("/media/usb/test_" + timestamp.strftime("%d_%m_%Y_%H%M") + ".avi", fourcc,5,(w,h), True)
+		writer.write(frame)
 		cv2.imshow("Detection", frame);
 		#cv2.setMouseCallback("Detection",mouseOn)
 		#key = cv2.waitKey(10) & 0xFF
