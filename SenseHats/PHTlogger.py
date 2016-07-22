@@ -34,7 +34,7 @@ xFile = open('x_files.log','w')
 yFile = open('y_file.log','w')
 zFile = open('z_file.log','w')
 
-dt = 5
+dt = 2
 t = 0
 #fig = plt.figure()
 #ax1 = fig.add_subplot(3,1,1)
